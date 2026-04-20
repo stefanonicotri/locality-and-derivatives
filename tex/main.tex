@@ -1,0 +1,143 @@
+\documentclass[11pt, a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath, amssymb, amsfonts}
+\usepackage[margin=1in]{geometry}
+\usepackage{hyperref}
+\usepackage{tcolorbox}
+\usepackage{parskip}
+
+\title{Mathematical Physics Notes: Locality and Derivative Operators}
+\author{Stefano Nicotri}
+\date{April 20, 2026}
+
+\begin{document}
+
+\maketitle
+
+This document summarizes the core mathematical and physical principles regarding local and nonlocal operators, fractional Laplacians, higher-order derivatives, and Ostrogradsky's Theorem.
+
+\section{The Fractional Laplacian and Nonlocality}
+The standard 1D Laplacian ($-\Delta f = -f''$) is a strictly local differential operator. Its computation only requires knowledge of the function in an infinitesimal neighborhood. To define a non-integer power $s \in (0, 1)$ of this operator, we use the Fourier transform:
+\[
+\mathcal{F}((-\Delta)^s f)(\xi) = |\xi|^{2s} \hat{f}(\xi)
+\]
+Returning to real space involves the convolution theorem. Because $|\xi|^{2s}$ is not a smooth polynomial when $s$ is a fraction, its inverse Fourier transform is an algebraically decaying distribution (kernel) rather than a localized Dirac delta function. This results in the integral representation:
+\[
+(-\Delta)^s f(x) = C_{1,s} \text{P.V.} \int_{-\infty}^{\infty} \frac{f(x) - f(y)}{|x - y|^{1+2s}} \, dy
+\]
+\begin{tcolorbox}[colback=blue!5!white, colframe=blue!75!black, title=Physical Meaning]
+This operator is non-local because evaluating it at a single point $x$ requires information from all $y \in (-\infty, \infty)$. It is commonly associated with anomalous diffusion and Lévy flights, where particles can make massive, discontinuous jumps across vast distances.
+\end{tcolorbox}
+
+\section{Recovering Locality: The Limit $s \to 1^-$}
+At exactly $s=1$, the mathematical rules change because $|\xi|^2 = \xi^2$ is a smooth polynomial, and its inverse Fourier transform is exactly $-\delta''(x)$, which recovers the purely local derivative. But how does the integral mathematically collapse into a local derivative as $s \to 1^-$?
+
+First, the normalization constant $C_{1,s}$ scales proportionally to $(1-s)$, meaning as $s \to 1^-$, the constant goes to zero ($C_{1,s} \to 0$).
+
+By splitting the integration domain into a local neighborhood ($|h| < \delta$) and a nonlocal tail ($|h| \ge \delta$), we observe:
+\begin{itemize}
+    \item \textbf{The Nonlocal Tail Vanishes:} The integral over the distant tail evaluates to a finite number, but it is multiplied by $C_{1,s} \to 0$. Thus, $0 \times \text{Finite} = 0$. Long-range interactions are completely suppressed.
+    \item \textbf{The Local Derivative is Extracted:} In the infinitesimally small neighborhood $|h| < \delta$, we apply the Taylor expansion $2f(x) - f(x+h) - f(x-h) \approx -h^2 f''(x)$. The integration over the singularity yields an $\mathcal{O}\left(\frac{1}{1-s}\right)$ term that perfectly cancels the $(1-s)$ from the constant $C_{1,s}$.
+\end{itemize}
+\[
+\lim_{s \to 1^-} (-\Delta)^s f(x) = -f''(x)
+\]
+
+\section{Higher-Order Integer Derivatives and Locality}
+If a Lagrangian contains a finite number of higher-order integer derivatives (e.g., $\square^2 \phi$), it remains strictly local. The Euler-Lagrange equations generalize to a finite sum of higher-order PDE terms:
+\[
+\frac{\partial \mathcal{L}}{\partial \phi} - \partial_\mu \left( \frac{\partial \mathcal{L}}{\partial (\partial_\mu \phi)} \right) + \dots + (-1)^N \partial_{\mu_1 \dots \mu_N} \left( \frac{\partial \mathcal{L}}{\partial (\partial_{\mu_1 \dots \mu_N} \phi)} \right) = 0
+\]
+Locality is preserved because these terms only require evaluating the field and its curvature properties exactly at the coordinate $x$, not over a global integral.
+
+\section{Ostrogradsky's Theorem: The Physical Instability}
+While finite higher-order derivatives are mathematically local, physicists avoid them due to Ostrogradsky's Theorem, which proves they lead to catastrophic physical instabilities.
+
+For a Lagrangian $L(q, \dot{q}, \ddot{q})$, the resulting 4th-order equation of motion requires 4 phase space coordinates: $q_1 = q$, $q_2 = \dot{q}$, and their conjugate momenta $p_1, p_2$. The Hamiltonian is constructed via Legendre transformation:
+\[
+H(q_1, q_2, p_1, p_2) = p_1 q_2 + p_2 f(q_1, q_2, p_2) - L(q_1, q_2, f(q_1, q_2, p_2))
+\]
+\begin{tcolorbox}[colback=blue!5!white, colframe=blue!75!black, title=The Fatal Flaw]
+The Hamiltonian depends strictly \emph{linearly} on the momentum $p_1$. Because $p_1$ is not squared, the energy is unbounded from below. The system contains "ghosts"—degrees of freedom that can permanently accelerate to negative infinite energy, constantly radiating positive energy and instantly destroying the stability of the system.
+\end{tcolorbox}
+
+\section{The Nonlocality of Infinite Series of Derivatives}
+An operator defined by an infinite series of derivatives, $\hat{O} = \sum c_n \partial_x^n$, is fundamentally nonlocal. Moving from a finite number of local derivatives to an infinite series bridges the gap between local curvature and global shape.
+
+\subsection{Proof: Every Infinite Series of Derivatives is Nonlocal}
+To rigorously prove that an arbitrary infinite series of derivatives always results in a nonlocal operator, we must evaluate its action using Fourier analysis. First, recall the definition of the \textbf{Fourier transform} and its inverse:
+\[
+\mathcal{F}(f(x))(\xi) = \hat{f}(\xi) = \int_{-\infty}^{\infty} f(x) e^{-i x \xi} \, dx
+\]
+\[
+\mathcal{F}^{-1}(\hat{f}(\xi))(x) = f(x) = \frac{1}{2\pi} \int_{-\infty}^{\infty} \hat{f}(\xi) e^{i x \xi} \, d\xi
+\]
+Now, let us define a general linear operator $\hat{O}$ consisting of an arbitrary infinite series of spatial derivatives with constant coefficients $c_n$:
+\[
+\hat{O} = \sum_{n=0}^{\infty} c_n \partial_x^n = c_0 + c_1 \partial_x + c_2 \partial_x^2 + c_3 \partial_x^3 + \dots
+\]
+When applying the Fourier transform, the differentiation theorem states that each spatial derivative $\partial_x$ corresponds to multiplying by $i\xi$ in momentum space. Thus, applying the operator in Fourier space yields:
+\[
+\mathcal{F}(\hat{O} f(x)) = \left( \sum_{n=0}^{\infty} c_n (i\xi)^n \right) \hat{f}(\xi)
+\]
+Notice that the infinite series in parentheses is now simply a continuous function of the momentum variable $\xi$. Let's call this function $P(i\xi)$:
+\[
+\mathcal{F}(\hat{O} f(x)) = P(i\xi) \hat{f}(\xi)
+\]
+To see how this operator behaves in real coordinate space, we must map it back using the \textbf{convolution theorem}, which states that multiplication in Fourier space is equivalent to convolution in real space. Let $K(x)$ be the inverse Fourier transform of the function $P(i\xi)$, known as the convolution kernel:
+\[
+K(x) = \mathcal{F}^{-1}(P(i\xi))
+\]
+\[
+\hat{O} f(x) = \int_{-\infty}^{\infty} K(x-y) f(y) \, dy
+\]
+\textbf{The Conclusion of Nonlocality:} The presence of this integral demonstrates that the operator $\hat{O}$ evaluates $f$ not just at $x$, but over the entire domain $y \in (-\infty, \infty)$. Any arbitrary infinite series of derivatives generates an extended kernel $K(x)$ (unlike finite derivatives which generate localized Dirac deltas). Therefore, every infinite series of derivatives is intrinsically nonlocal.
+
+\subsection{Proof: Only the Exponential Acts as a Pure Translation}
+While every infinite series is nonlocal, not all act as translation operators. A pure translation by a distance $a$ means $\hat{O} f(x) = f(x+a)$. For the convolution integral to perfectly output $f(x+a)$, the kernel $K(x)$ must be exactly a shifted Dirac delta function:
+\[
+K(x) = \delta(x+a)
+\]
+If $K(x) = \delta(x+a)$, we can take the Fourier transform of this delta function to find the unique multiplier $P(i\xi)$ that produces it:
+\[
+P(i\xi) = \mathcal{F}(\delta(x+a)) = \int_{-\infty}^{\infty} \delta(x+a) e^{-i\xi x} \, dx = e^{i a \xi}
+\]
+So, for the operator to be a pure translation, the function $P(i\xi)$ must exactly equal $e^{ia\xi}$. Taking the Taylor expansion of $e^{ia\xi}$ yields:
+\[
+e^{ia\xi} = \sum_{n=0}^{\infty} \frac{(ia\xi)^n}{n!} = \sum_{n=0}^{\infty} \frac{a^n}{n!} (i\xi)^n
+\]
+By matching this back to our very first definition ($P(i\xi) = \sum c_n (i\xi)^n$), we are forced to conclude that $c_n = \frac{a^n}{n!}$. This proves that an infinite series of derivatives acts as a pure translation operator \emph{if and only if} it is exactly the exponential operator $e^{a\partial_x}$. Other series (like $\cos(a\partial_x)$ or Gaussian terms $e^{\alpha\partial_x^2}$) create complex smearing or stretching effects across the domain.
+
+\subsection{Analyticity and Taylor Series}
+If a function $f(x)$ is analytic, it can be perfectly represented by its Taylor series around a point $x_0$:
+\[
+f(x) = \sum_{n=0}^{\infty} \frac{f^{(n)}(x_0)}{n!} (x - x_0)^n
+\]
+By acting on a function with an infinite series of derivatives, you are inherently extracting its Taylor series data. You mathematically reconstruct the function's global shape rather than just probing the local coordinate.
+
+\subsection{A Concrete Example: The Gaussian Derivative Operator}
+Consider the operator $\hat{O} = e^{\alpha \partial_x^2}$ ($\alpha > 0$). In Fourier space, the exponent becomes $\alpha(i\xi)^2 = -\alpha \xi^2$, meaning the operator acts as a Gaussian multiplier:
+\[
+\mathcal{F}(e^{\alpha \partial_x^2} f(x)) = e^{-\alpha \xi^2} \hat{f}(\xi)
+\]
+To find the real-space action, we take the inverse Fourier transform of the Gaussian multiplier, yielding a Gaussian convolution kernel in real space:
+\[
+e^{\alpha \partial_x^2} f(x) = \frac{1}{\sqrt{4\pi \alpha}} \int_{-\infty}^{\infty} e^{-\frac{(x-y)^2}{4\alpha}} f(y) \, dy
+\]
+This integral proves that the operator does not evaluate $f$ locally. It takes the value of $f(y)$ at every point in the universe, assigns it a weight based on a Gaussian bell curve centered at $x$, and averages them together. Because the Gaussian tail never hits zero, the operator is non-local.
+
+\subsection{The Boundary: Polynomials vs. Transcendental Functions}
+\begin{itemize}
+    \item \textbf{Finite Derivatives (Local):} The Fourier multiplier is a polynomial. Its inverse Fourier transform is a finite combination of Dirac delta functions, which collapse the convolution integral back to a single point.
+    \item \textbf{Infinite Derivatives (Nonlocal):} The Fourier multiplier is typically a transcendental function (e.g., $e^{-\xi^2}$). Its inverse Fourier transform is an extended, continuous distribution that requires scanning the entire domain during convolution.
+\end{itemize}
+
+\subsection{Physical Applications: Curing UV Divergences}
+In standard Quantum Field Theory (QFT), point-particle interactions lead to ultraviolet (UV) divergences—infinities at microscopic distances. To fix this, physicists use infinite derivative operators to "smear out" the interaction vertex.
+
+\begin{tcolorbox}[colback=blue!5!white, colframe=blue!75!black, title=String Theory \& Gravity]
+Operators like $e^{-\square / M^2}$ naturally produce a Lorentz-invariant Gaussian smearing effect. In String Field Theory, this accounts for the extended 1D nature of strings. In Infinite Derivative Gravity, this spreads out the mass of singularities, preventing infinite densities while leaving macroscopic physics perfectly local.
+\end{tcolorbox}
+
+\end{document}
