@@ -8,4 +8,14 @@ In field theory, quantum mechanics, and probability, the distinction between **l
 
 This document is entirely self-contained in a single `index.html` file.
 
+## Author
+
+**Stefano Nicotri**
+
+* **GitHub:** [@stefanonicotri](https://github.com/stefanonicotri)
+
+*(Feel free to reach out with questions, discussions on differential geometry, or contributions to this educational tool!)*
+
+## License
+This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.
 
