@@ -1,6 +1,6 @@
 # Mathematical Physics Notes: Locality and Derivative Operators
 
-A standalone, beautifully formatted, and interactive HTML document exploring the mathematical boundaries between local and nonlocal operators in theoretical physics. 
+A standalone interactive HTML document exploring the mathematical boundaries between local and nonlocal operators in theoretical physics. 
 
 ## 📖 Overview
 
